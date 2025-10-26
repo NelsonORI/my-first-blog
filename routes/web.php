@@ -1,11 +1,18 @@
 <?php
 
+use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
-    return view('home');
+    //These are used to list all posts of the logged-in user
+    $posts = auth()->user()->posts()->get();
+    // $posts = Post::where('user_id',auth()->id())->get();
+
+    //$posts = Post::all(); // This will fetch all posts from the database, regardless of the user
+
+    return view('home', ['posts' => $posts]);
 });
 
 Route::post('/register', [UserController::class, 'register']);
