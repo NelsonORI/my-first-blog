@@ -20,3 +20,7 @@ Route::get('/edit-post/{post}',[PostController::class, 'editPostView']);
 Route::put('/edit-post/{post}',[PostController::class, 'editPost']);
 Route::delete('/delete-post/{post}',[PostController::class, 'deletePost']);
 
+
+Route::get('/about', function () {
+   return Inertia::render('About');
+});
