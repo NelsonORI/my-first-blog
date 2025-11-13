@@ -14,11 +14,22 @@ class UserController extends Controller
             'loginname' => 'required',
             'loginpassword' => 'required'
         ]);
+        $user = User::where('name', $incomingFields['loginname'])->first();
         if(auth()->attempt(['name' => $incomingFields['loginname'], 'password' => $incomingFields['loginpassword']])){
             request()->session()->regenerate();
+
+            return response()->json([
+            'status' => 'success',
+            'message' => 'Login successful',
+            'user' => $user
+        ], 200);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid credentials'
+            ], 401);
         }
 
-        return redirect('/');
     }
 
     public function logout(){
@@ -33,8 +44,17 @@ class UserController extends Controller
             'password' => 'required'
         ]);
         $incomingFields['password'] = bcrypt($incomingFields['password']);
-        $user = User::create($incomingFields);
-        auth()->login($user);
-        return redirect('/');
+        if(User::create($incomingFields)){
+            return response()->json([
+                'status' => 'success',
+
+                'message' => 'Registration successful'
+            ], 201);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Registration failed'
+            ], 500);
+        }
     }
 }  
