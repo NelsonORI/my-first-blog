@@ -44,7 +44,17 @@ class PostController extends Controller
         $incomingFields['title'] = strip_tags($incomingFields['title']);
         $incomingFields['body'] = strip_tags($incomingFields['body']);
         $incomingFields['user_id'] = auth()->id();
-        Post::create($incomingFields);
-        return redirect('/');
+        if(Post::create($incomingFields)){
+            return response()->json(
+                [
+                    'status' => 'success'
+                ], 201);
+        }else{
+            return response()->json(
+                [
+                    'status' => 'error'
+                ], 500);
+        }
+        
     }
 }

@@ -11,12 +11,10 @@ export default function LoginPage(){
     const handleSubmit = async (e) => {
         e.preventDefault();
         const result = await login(username, password);
-        console.log(result);
         if (result.status === 'success'){
             router.visit('/');
         } else {
             alert('Login failed. Please check your credentials.');
-            console.log(result.status);
 
         }
     }

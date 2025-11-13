@@ -7,7 +7,11 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
-   return Inertia::render('Home');
+   $posts = [];
+   if($user = auth()->user()){
+      $posts = $user->posts()->with('user')->get();
+   }
+   return Inertia::render('Home', ['posts' => $posts]);
 });
 
 Route::get('/login', function () {
