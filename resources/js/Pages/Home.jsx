@@ -18,6 +18,10 @@ export default function Homepage({posts}){
         
         if(result.data.status === 'success') {
             alert('Post created successfully');
+
+            Inertia.reload({only:['posts']});
+            setPostTitle("");
+            setPostContent("");
         }else{
             alert('Failed to create post');
         }

@@ -8,8 +8,8 @@ export const useAuth = () => {
 };
 
 //The provider wraps around components that need access to the context.Making it available to all child components
-export const AuthProvider = ({children}) => {
-    const [user, setUser] = useState(null);
+export const AuthProvider = ({children, initialUser}) => {
+    const [user, setUser] = useState(initialUser);
 
     const login = async (username, password) => {
         try{
