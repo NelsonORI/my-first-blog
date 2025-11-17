@@ -13,7 +13,10 @@ class PostController extends Controller
         }
 
         $post->delete();
-        return redirect('/');
+        return response()->json(
+            [
+                'status' => 'success'
+            ], 200);
     }
     public function editPost(Post $post, Request $request){
         if ($post->user_id != auth()->id()){

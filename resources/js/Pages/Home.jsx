@@ -2,6 +2,8 @@ import BaseLayout from "../Layout/BaseLayout";
 import React,{useState} from "react";
 import { useAuth } from "../Context/Context.jsx";
 import api from "../api.jsx";
+import { router } from '@inertiajs/react';
+
 
 export default function Homepage({posts}){
     const { user } = useAuth();
@@ -17,9 +19,7 @@ export default function Homepage({posts}){
         })      
         
         if(result.data.status === 'success') {
-            alert('Post created successfully');
-
-            Inertia.reload({only:['posts']});
+            router.reload();
             setPostTitle("");
             setPostContent("");
         }else{
@@ -27,6 +27,18 @@ export default function Homepage({posts}){
         }
         router.reload();
     }
+
+    const handleDelete = async (e,postId) => {
+        e.preventDefault();
+        const result  = await api.delete('/delete-post/' + postId);
+        
+        if(result.data.status === 'success'){
+            router.reload();
+        }else{
+            alert('Failed to delete post');
+        }
+    };
+
     if(!user){
         return(
             <BaseLayout>
@@ -58,6 +70,7 @@ export default function Homepage({posts}){
                             <h4 className="text-lg font-semibold">{post.title}</h4>
                             <p>{post.body}</p>
                             <p className="text-sm text-gray-500">By {post.user.name}</p>
+                            <button type="button" onClick={(e) => handleDelete(e, post.id)} className="text-red-500">Delete</button>
                         </div>
                     )
                 ) : (
