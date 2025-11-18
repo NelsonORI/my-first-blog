@@ -24,13 +24,20 @@ Route::middleware(['web'])->group(function () {
       return Inertia::render('Register');
    });
 
+   Route::get('/edit-post/{post}', function(Post $post){
+      $post = [];
+      if($user = auth()->user()){
+         $post = $user->posts()->where('id', request()->post->id)->first();
+      }
+      return Inertia::render('EditPost', ['post' => $post]);
+   });
+
    Route::post('/register', [UserController::class, 'register']);
    Route::post('/logout', [UserController::class,'logout']);
    Route::post('/login', [UserController::class,'login']); 
 
    //Blog related routes
    Route::post('/create-post', [PostController::class, 'createPost']);
-   Route::get('/edit-post/{post}',[PostController::class, 'editPostView']);
    Route::put('/edit-post/{post}',[PostController::class, 'editPost']);
    Route::delete('/delete-post/{post}',[PostController::class, 'deletePost']);
 

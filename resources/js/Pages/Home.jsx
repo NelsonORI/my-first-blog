@@ -70,6 +70,7 @@ export default function Homepage({posts}){
                             <h4 className="text-lg font-semibold">{post.title}</h4>
                             <p>{post.body}</p>
                             <p className="text-sm text-gray-500">By {post.user.name}</p>
+                            <p>Update this post <a href={`/edit-post/${post.id}`}>here</a></p>
                             <button type="button" onClick={(e) => handleDelete(e, post.id)} className="text-red-500">Delete</button>
                         </div>
                     )

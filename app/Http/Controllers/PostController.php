@@ -20,7 +20,12 @@ class PostController extends Controller
     }
     public function editPost(Post $post, Request $request){
         if ($post->user_id != auth()->id()){
-            return redirect('/');
+            return response()->json(
+                [
+                    'status' => 'error',
+                    'message' => 'Unauthorized',
+                ],403
+            );
         }
 
         $incomingFields = $request->validate([
@@ -30,8 +35,12 @@ class PostController extends Controller
         $incomingFields['title'] = strip_tags($incomingFields['title']);
         $incomingFields['body'] = strip_tags($incomingFields['body']);
         $post->update($incomingFields);
-        return redirect('/');
+        return response()->json(
+            [
+                'status' => 'success'
+            ], 200);
     }
+    
     public function editPostView(Post $post){
         if ($post->user_id != auth()->id()){
             return redirect('/');
