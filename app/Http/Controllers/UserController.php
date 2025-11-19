@@ -34,7 +34,10 @@ class UserController extends Controller
 
     public function logout(){
         auth()->logout();
-        return redirect('/');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Logout successful'
+        ], 200);
     }
 
     public function register(Request $request){

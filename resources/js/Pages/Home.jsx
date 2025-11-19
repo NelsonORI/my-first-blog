@@ -38,7 +38,16 @@ export default function Homepage({posts}){
             alert('Failed to delete post');
         }
     };
+    const handleLogout = async (e) => {
+        e.preventDefault();
+        const result = await api.post('/logout');
 
+        if(result.data.status === 'success'){
+            router.visit('/login');
+        }else{
+            alert('Failed to logout');
+        }
+    };
     if(!user){
         return(
             <BaseLayout>
@@ -49,6 +58,7 @@ export default function Homepage({posts}){
     return (
         <BaseLayout>
             <h2>Welcome to the Homepage {user.name}</h2> 
+            <button onClick={handleLogout} className="">Logout</button>
             <div className="border p-4 mt-4">
                 <form onSubmit={handleSubmit}>
                     <div>

@@ -47,15 +47,32 @@ export const AuthProvider = ({children, initialUser}) => {
                 email:email,
                 password:password
             })
+            
             if(response.status === "success"){
                 return {
                     status: 'success',
                     message: 'Registration successful'
                 };
+            }else if (response.status === "error"){
+                return {
+                    status: 'error',
+                    message: 'Registration failed'
+                }
             }
             return response;
         }catch (error){
-            console.error('Registration failed:', error);
+            if(error.response && error.response.status === 422){
+                return {
+                    status: 'validation_error',
+                    message: 'Validation failed',
+                    errors: error.response.data.errors
+                }
+            }
+            return {
+                status: 'error',
+                message: 'Something went wrong'
+            }
+            
         }
     };
 

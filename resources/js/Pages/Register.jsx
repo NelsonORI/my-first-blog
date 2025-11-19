@@ -1,6 +1,8 @@
 import BaseLayout from "../Layout/BaseLayout";
 import { useAuth } from "../Context/Context";
 import React, { useState } from "react";
+import api from "../api";
+import { router } from "@inertiajs/react";
 
 export default function RegisterPage(){
     const { registerUser } = useAuth();
@@ -11,12 +13,11 @@ export default function RegisterPage(){
     const handleSubmit = async (e) => {
         e.preventDefault();
         const result = await registerUser(username, email, password);
-        if (result.data.status === 'success') {
-            alert('Registration successful!');
+        if (result.status === 'success') {
+            router.visit('/login')
             // Optionally redirect to login or home page
         } else {
             alert('Registration failed. Please try again.');
-            console.log(result.status);
         }
     }
     return (
