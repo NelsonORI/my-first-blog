@@ -25,9 +25,8 @@ Route::middleware(['web'])->group(function () {
    });
 
    Route::get('/edit-post/{post}', function(Post $post){
-      $post = [];
-      if($user = auth()->user()){
-         $post = $user->posts()->where('id', request()->post->id)->first();
+      if(!auth()->check() || $post->user_id !== auth()->id()){
+         return abort(403, 'Unauthorized');
       }
       return Inertia::render('EditPost', ['post' => $post]);
    });
